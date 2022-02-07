@@ -30,7 +30,7 @@ elif [[ "${PWD##*/}" == "Minecraft-Username-Availability-Checker" ]]; then
     echo ""
 else
     echo "[ok] installing Minecraft Username Availability Checker..."
-    git clone -q https://github.com/chronicallyunfunny/Minecraft-Username-Availability-Checker
+    git clone -q https://github.com/puxt/Minecraft-Username-Availability-Checker
     echo "[ok] installed Minecraft Username Availability Checker"
     cd Minecraft-Username-Availability-Checker
     echo ""
