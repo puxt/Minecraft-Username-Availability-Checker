@@ -122,4 +122,3 @@ print()
 print( greenBg + black + f'Available username(s): {available_names}' + reset )
 if invalid_names:
     print( redBg + black + f'Invalid username(s): {invalid_names}' + reset )
-
