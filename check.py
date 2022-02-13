@@ -45,6 +45,9 @@ def title():
     return ''
 print(title())
 
+available_names = []
+invalid_names = []
+
 def check_username(username):
     retry = True
     
@@ -60,14 +63,18 @@ def check_username(username):
             
             elif res.status_code == 204:
                 print( green + f'{username} is available or never used.' + reset )
-                
+
                 available_names.append(username)
+                output = open('available.txt','w')
+                for items in available_names:
+                    output.writelines(items+'\n')
+
             elif res.status_code == 429:
                 end_time = time.time()
                 global start_time
                 time_to_wait = math.ceil(200 - (end_time - start_time))
                 global rate_limited
-                
+
                 if not rate_limited:
                     rate_limited = True
                     print( redBg + black + f'Request is being refused due to IP being rate limited. Waiting {time_to_wait} seconds before reattempting...' + reset )
@@ -75,7 +82,7 @@ def check_username(username):
                 time.sleep(time_to_wait)
                 rate_limited = False
                 start_time = time.time()
-            
+
             else:
                 res.raise_for_status()
                 print( redBg + black + f'Unhandled HTTP status code: {res.status_code}. Exiting...' + reset )
@@ -89,9 +96,6 @@ filepath = sys.argv[1]
 if not path.isfile(filepath):
     print( redBg + black + f'File path {filepath} does not exist. Exiting...' + reset )
     sys.exit()
-
-available_names = []
-invalid_names = []
 
 with open(filepath) as name_list:
     username_list = [line.strip() for line in name_list]
@@ -114,6 +118,8 @@ with concurrent.futures.ThreadPoolExecutor() as executor:
         sys.exit()
 
 print()
+
 print( greenBg + black + f'Available username(s): {available_names}' + reset )
 if invalid_names:
     print( redBg + black + f'Invalid username(s): {invalid_names}' + reset )
+
